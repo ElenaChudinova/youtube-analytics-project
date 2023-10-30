@@ -7,10 +7,17 @@ class Video:
     def __init__(self, video_id):
         self.video_id = video_id
         self.video = self.get_service().videos().list(id=video_id, part='snippet,statistics').execute()
-        self.video_title = self.video['items'][0]['snippet']['title']
-        self.url = 'https://www.youtube.com/video/'
-        self.view_count = self.video['items'][0]['statistics']['viewCount']
-        self.like_count = self.video['items'][0]['statistics']['likeCount']
+        try:
+            self.video_title = self.video['items'][0]['snippet']['title']
+            self.url = f'https://www.youtube.com/video/{self.video_id}'
+            self.view_count = self.video['items'][0]['statistics']['viewCount']
+            self.like_count = self.video['items'][0]['statistics']['likeCount']
+        except IndexError:
+            self.video_title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
+
 
 
     @classmethod
